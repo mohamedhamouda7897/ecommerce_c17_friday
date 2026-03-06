@@ -1,8 +1,8 @@
 import 'package:ecommerce_c17_frid/core/resources/values_manager.dart';
 import 'package:ecommerce_c17_frid/di.dart';
-import 'package:ecommerce_c17_frid/features/main_layout/categories/bloc/category_bloc.dart';
-import 'package:ecommerce_c17_frid/features/main_layout/categories/bloc/category_events.dart';
-import 'package:ecommerce_c17_frid/features/main_layout/categories/bloc/category_state.dart';
+import 'package:ecommerce_c17_frid/features/main_layout/categories/presentation/bloc/category_bloc.dart';
+import 'package:ecommerce_c17_frid/features/main_layout/categories/presentation/bloc/category_events.dart';
+import 'package:ecommerce_c17_frid/features/main_layout/categories/presentation/bloc/category_state.dart';
 import 'package:ecommerce_c17_frid/features/main_layout/categories/presentation/widgets/categories_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

@@ -20,7 +20,8 @@ import 'features/auth/domain/repository/auth_repositroy.dart' as _i890;
 import 'features/auth/domain/usecases/login_usecase.dart' as _i206;
 import 'features/auth/domain/usecases/signup_usecase.dart' as _i100;
 import 'features/auth/presentation/bloc/auth_bloc.dart' as _i363;
-import 'features/main_layout/categories/bloc/category_bloc.dart' as _i58;
+import 'features/main_layout/categories/presentation/bloc/category_bloc.dart'
+    as _i916;
 import 'features/main_layout/home/data/datasource/home_ds.dart' as _i269;
 import 'features/main_layout/home/data/datasource/home_ds_impl.dart' as _i1070;
 import 'features/main_layout/home/data/repo/home_repo_impl.dart' as _i573;
@@ -61,8 +62,8 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i726.GetCategoriesUsecase>(
       () => _i726.GetCategoriesUsecase(gh<_i347.HomeRepo>()),
     );
-    gh.factory<_i58.CategoryBloc>(
-      () => _i58.CategoryBloc(gh<_i726.GetCategoriesUsecase>()),
+    gh.factory<_i916.CategoryBloc>(
+      () => _i916.CategoryBloc(gh<_i726.GetCategoriesUsecase>()),
     );
     gh.factory<_i123.HomeBloc>(
       () => _i123.HomeBloc(gh<_i726.GetCategoriesUsecase>()),
