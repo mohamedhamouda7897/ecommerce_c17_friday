@@ -13,9 +13,9 @@ class HomeDataSourceImpl implements HomeDataSource {
   @override
   Future<CategoryResponse> getCategories() async {
     try {
-      var data = await apiManager.get(endpoint: Endpoints.categories);
+      var result = await apiManager.get(endpoint: Endpoints.categories);
 
-      return CategoryResponse.fromJson(data.data);
+      return CategoryResponse.fromJson(result.data);
     } catch (e) {
       rethrow;
     }

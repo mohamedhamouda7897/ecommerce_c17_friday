@@ -1,5 +1,6 @@
 import 'package:ecommerce_c17_frid/core/Api/error_handling.dart';
 import 'package:ecommerce_c17_frid/features/auth/presentation/bloc/auth_state.dart';
+import 'package:ecommerce_c17_frid/features/main_layout/categories/data/models/SubCategoryResponse.dart';
 import 'package:ecommerce_c17_frid/features/main_layout/home/data/models/CategoryReponse.dart';
 
 class CategoryState {
@@ -7,12 +8,19 @@ class CategoryState {
   CategoryResponse? categoryResponse;
   BaseExceptions? categoryException;
   int? selectedIndex;
+  RequestStatus? subCategoriesStatus;
+  SubCategoryResponse? subCategoryResponse;
+  BaseExceptions? subCategoryException;
+
 
   CategoryState({
     this.categoriesStatus=RequestStatus.init,
     this.categoryResponse,
     this.categoryException,
     this.selectedIndex=0,
+    this.subCategoriesStatus=RequestStatus.init,
+    this.subCategoryResponse,
+    this.subCategoryException,
   });
 
   CategoryState copyWith({
@@ -20,12 +28,18 @@ class CategoryState {
     CategoryResponse? categoryResponse,
     BaseExceptions? categoryException,
     int? selectedIndex,
+    RequestStatus? subCategoriesStatus,
+    SubCategoryResponse? subCategoryResponse,
+    BaseExceptions? subCategoryException,
   }) {
     return CategoryState(
       categoriesStatus: categoriesStatus ?? this.categoriesStatus,
       categoryResponse: categoryResponse ?? this.categoryResponse,
       selectedIndex: selectedIndex ?? this.selectedIndex,
       categoryException: categoryException ?? this.categoryException,
+      subCategoriesStatus: subCategoriesStatus ?? this.subCategoriesStatus,
+      subCategoryResponse: subCategoryResponse ?? this.subCategoryResponse,
+      subCategoryException: subCategoryException ?? this.subCategoryException
     );
   }
 }

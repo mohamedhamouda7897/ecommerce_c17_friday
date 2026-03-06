@@ -20,6 +20,14 @@ import 'features/auth/domain/repository/auth_repositroy.dart' as _i890;
 import 'features/auth/domain/usecases/login_usecase.dart' as _i206;
 import 'features/auth/domain/usecases/signup_usecase.dart' as _i100;
 import 'features/auth/presentation/bloc/auth_bloc.dart' as _i363;
+import 'features/main_layout/categories/data/datasource/sub_category_Ds.dart'
+    as _i125;
+import 'features/main_layout/categories/data/repo/sub_category_repo_impl.dart'
+    as _i544;
+import 'features/main_layout/categories/domain/repo/sub_category_repo.dart'
+    as _i399;
+import 'features/main_layout/categories/domain/usecases/get_sub_category_usecase.dart'
+    as _i92;
 import 'features/main_layout/categories/presentation/bloc/category_bloc.dart'
     as _i916;
 import 'features/main_layout/home/data/datasource/home_ds.dart' as _i269;
@@ -29,6 +37,11 @@ import 'features/main_layout/home/domain/repo/home_repo.dart' as _i347;
 import 'features/main_layout/home/domain/usecase/get_categories_usecase.dart'
     as _i726;
 import 'features/main_layout/home/presentation/bloc/home_bloc.dart' as _i123;
+import 'features/products_screen/data/data_source/product_ds.dart' as _i0;
+import 'features/products_screen/data/repo/product_repo_impl.dart' as _i845;
+import 'features/products_screen/domain/repo/product_repo.dart' as _i1030;
+import 'features/products_screen/domain/usecases/get_products.dart' as _i737;
+import 'features/products_screen/presentation/bloc/product_bloc.dart' as _i477;
 
 extension GetItInjectableX on _i174.GetIt {
   // initializes the registration of main-scope dependencies inside of GetIt
@@ -38,14 +51,27 @@ extension GetItInjectableX on _i174.GetIt {
   }) {
     final gh = _i526.GetItHelper(this, environment, environmentFilter);
     gh.lazySingleton<_i795.ApiManager>(() => _i795.ApiManager());
+    gh.factory<_i125.SubCategoryDs>(
+      () => _i125.SubCategoryDsImpl(gh<_i795.ApiManager>()),
+    );
     gh.factory<_i697.AuthDataSource>(
       () => _i524.AuthDataSourceImpl(gh<_i795.ApiManager>()),
     );
+    gh.factory<_i0.ProductDs>(() => _i0.ProductDsImpl(gh<_i795.ApiManager>()));
     gh.factory<_i269.HomeDataSource>(
       () => _i1070.HomeDataSourceImpl(gh<_i795.ApiManager>()),
     );
+    gh.factory<_i399.SubCategoryRepo>(
+      () => _i544.SubCategoryRepoImpl(gh<_i125.SubCategoryDs>()),
+    );
     gh.factory<_i890.AuthRepository>(
       () => _i674.AuthRepoImpl(gh<_i697.AuthDataSource>()),
+    );
+    gh.factory<_i1030.ProductRepo>(
+      () => _i845.ProductRepoImpl(gh<_i0.ProductDs>()),
+    );
+    gh.factory<_i737.GetProductsUseCase>(
+      () => _i737.GetProductsUseCase(gh<_i1030.ProductRepo>()),
     );
     gh.factory<_i347.HomeRepo>(
       () => _i573.HomeRepoImpl(gh<_i269.HomeDataSource>()),
@@ -56,17 +82,26 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i100.SignupUsecase>(
       () => _i100.SignupUsecase(gh<_i890.AuthRepository>()),
     );
+    gh.factory<_i477.ProductBloc>(
+      () => _i477.ProductBloc(gh<_i737.GetProductsUseCase>()),
+    );
+    gh.factory<_i92.GetSubCategoryUseCase>(
+      () => _i92.GetSubCategoryUseCase(gh<_i399.SubCategoryRepo>()),
+    );
     gh.factory<_i363.AuthBloc>(
       () => _i363.AuthBloc(gh<_i206.LoginUseCase>(), gh<_i100.SignupUsecase>()),
     );
     gh.factory<_i726.GetCategoriesUsecase>(
       () => _i726.GetCategoriesUsecase(gh<_i347.HomeRepo>()),
     );
-    gh.factory<_i916.CategoryBloc>(
-      () => _i916.CategoryBloc(gh<_i726.GetCategoriesUsecase>()),
-    );
     gh.factory<_i123.HomeBloc>(
       () => _i123.HomeBloc(gh<_i726.GetCategoriesUsecase>()),
+    );
+    gh.factory<_i916.CategoryBloc>(
+      () => _i916.CategoryBloc(
+        gh<_i726.GetCategoriesUsecase>(),
+        gh<_i92.GetSubCategoryUseCase>(),
+      ),
     );
     return this;
   }

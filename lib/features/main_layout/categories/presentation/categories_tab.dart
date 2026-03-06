@@ -18,10 +18,13 @@ class CategoriesTab extends StatelessWidget {
   Widget build(BuildContext context) {
     return LoaderOverlay(
       child: BlocProvider(
-        create: (context) => getIt<CategoryBloc>()..add(GetCategoriesEvent()),
+        create: (context) => getIt<CategoryBloc>()
+          ..add(GetCategoriesEvent())
+          ..add(GetSubCategoriesEvent()),
         child: BlocConsumer<CategoryBloc, CategoryState>(
           listener: (context, state) {
-            if (state.categoriesStatus == RequestStatus.loading) {
+            if (state.categoriesStatus == RequestStatus.loading ||
+                state.subCategoriesStatus == RequestStatus.loading) {
               context.loaderOverlay.show();
             } else {
               context.loaderOverlay.hide();

@@ -4,6 +4,7 @@ import 'package:ecommerce_c17_frid/features/auth/presentation/screens/sign_up_sc
 import 'package:ecommerce_c17_frid/features/cart/screens/cart_screen.dart';
 import 'package:ecommerce_c17_frid/features/main_layout/main_layout.dart';
 import 'package:ecommerce_c17_frid/features/product_details/presentation/screen/product_details.dart';
+import 'package:ecommerce_c17_frid/features/products_screen/data/models/Product_response.dart';
 import 'package:ecommerce_c17_frid/features/products_screen/presentation/screens/products_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -16,20 +17,25 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => const MainLayout());
 
       case Routes.productsScreenRoute:
-        return MaterialPageRoute(builder: (_) => const ProductsScreen());
+        {
+          String args = settings.arguments as String;
 
+          return MaterialPageRoute(builder: (_) => ProductsScreen(catId: args));
+        }
       case Routes.productDetails:
         {
-          final args = settings.arguments;
+          final args = settings.arguments as Data;
 
-          return MaterialPageRoute(builder: (_) => const ProductDetails());
+          return MaterialPageRoute(
+            builder: (_) => ProductDetails(product: args),
+          );
         }
 
       case Routes.signInRoute:
-        return MaterialPageRoute(builder: (_) =>  SignInScreen());
+        return MaterialPageRoute(builder: (_) => SignInScreen());
 
       case Routes.signUpRoute:
-        return MaterialPageRoute(builder: (_) =>  SignUpScreen());
+        return MaterialPageRoute(builder: (_) => SignUpScreen());
       default:
         return unDefinedRoute();
     }
@@ -38,9 +44,7 @@ class RouteGenerator {
   static Route<dynamic> unDefinedRoute() {
     return MaterialPageRoute(
       builder: (_) => Scaffold(
-        appBar: AppBar(
-          title: const Text('No Route Found'),
-        ),
+        appBar: AppBar(title: const Text('No Route Found')),
         body: const Center(child: Text('No Route Found')),
       ),
     );

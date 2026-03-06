@@ -1,7 +1,9 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ecommerce_c17_frid/core/resources/color_manager.dart';
 import 'package:ecommerce_c17_frid/core/resources/styles_manager.dart';
 import 'package:ecommerce_c17_frid/core/routes_manager/routes.dart';
 import 'package:ecommerce_c17_frid/core/widget/heart_button.dart';
+import 'package:ecommerce_c17_frid/features/products_screen/data/models/Product_response.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -14,6 +16,7 @@ class CustomProductWidget extends StatelessWidget {
   final double price;
   final double discountPercentage;
   final double rating;
+  final Data product;
 
   const CustomProductWidget({
     super.key,
@@ -25,6 +28,7 @@ class CustomProductWidget extends StatelessWidget {
     required this.price,
     required this.discountPercentage,
     required this.rating,
+    required this.product,
   });
 
   String truncateTitle(String title) {
@@ -48,7 +52,11 @@ class CustomProductWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => Navigator.pushNamed(context, Routes.productDetails,arguments: {}),
+      onTap: () => Navigator.pushNamed(
+        context,
+        Routes.productDetails,
+        arguments: product,
+      ),
       child: Container(
         width: width * 0.4,
         height: height * 0.3,
@@ -68,33 +76,31 @@ class CustomProductWidget extends StatelessWidget {
                 alignment: AlignmentDirectional.center,
                 children: [
                   // Not working with the lastest flutter version
-
-                  // CachedNetworkImage(
-                  //   imageUrl: image,
-                  //   height: height * 0.15,
-                  //   width: double.infinity,
-                  //   fit: BoxFit.cover,
-                  //   placeholder: (context, url) =>
-                  //       const Center(child: CircularProgressIndicator()),
-                  //   errorWidget: (context, url, error) => const Icon(Icons.error),
-                  // ),
-                  // Image.network(
-                  //   image,
-                  //   fit: BoxFit.cover,
-                  // ),
-                  ClipRRect(
-                    borderRadius:
-                        BorderRadius.vertical(top: Radius.circular(14.r)),
-                    child: Image.asset(
-                      image,
-                      fit: BoxFit.cover,
-                      width: width,
-                    ),
+                  CachedNetworkImage(
+                    imageUrl: image,
+                    height: height * 0.15,
+                    width: double.infinity,
+                    fit: BoxFit.cover,
+                    placeholder: (context, url) =>
+                        const Center(child: CircularProgressIndicator()),
+                    errorWidget: (context, url, error) =>
+                        const Icon(Icons.error),
                   ),
+                  Image.network(image, fit: BoxFit.cover),
+                  // ClipRRect(
+                  //   borderRadius:
+                  //       BorderRadius.vertical(top: Radius.circular(14.r)),
+                  //   child: Image.asset(
+                  //     image,
+                  //     fit: BoxFit.cover,
+                  //     width: width,
+                  //   ),
+                  // ),
                   Positioned(
-                      top: height * 0.01,
-                      right: width * 0.02,
-                      child: HeartButton(onTap: () {})),
+                    top: height * 0.01,
+                    right: width * 0.02,
+                    child: HeartButton(onTap: () {}),
+                  ),
                 ],
               ),
             ),
@@ -175,15 +181,12 @@ class CustomProductWidget extends StatelessWidget {
                                 shape: BoxShape.circle,
                                 color: ColorManager.primary,
                               ),
-                              child: const Icon(
-                                Icons.add,
-                                color: Colors.white,
-                              ),
+                              child: const Icon(Icons.add, color: Colors.white),
                             ),
                           ),
                         ),
                       ],
-                    )
+                    ),
                   ],
                 ),
               ),
