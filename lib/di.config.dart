@@ -11,8 +11,10 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:get_it/get_it.dart' as _i174;
 import 'package:injectable/injectable.dart' as _i526;
+import 'package:shared_preferences/shared_preferences.dart' as _i460;
 
 import 'core/Api/api_manager.dart' as _i795;
+import 'core/cache_helper/cache_helper.dart' as _i891;
 import 'features/auth/data/data_source/auth_data_source.dart' as _i697;
 import 'features/auth/data/data_source/auth_ds_impl.dart' as _i524;
 import 'features/auth/data/repository/auth_repo_impl.dart' as _i674;
@@ -45,21 +47,32 @@ import 'features/products_screen/presentation/bloc/product_bloc.dart' as _i477;
 
 extension GetItInjectableX on _i174.GetIt {
   // initializes the registration of main-scope dependencies inside of GetIt
-  _i174.GetIt init({
+  Future<_i174.GetIt> init({
     String? environment,
     _i526.EnvironmentFilter? environmentFilter,
-  }) {
+  }) async {
     final gh = _i526.GetItHelper(this, environment, environmentFilter);
+    final registerModule = _$RegisterModule();
+    await gh.factoryAsync<_i460.SharedPreferences>(
+      () => registerModule.prefs,
+      preResolve: true,
+    );
     gh.lazySingleton<_i795.ApiManager>(() => _i795.ApiManager());
     gh.factory<_i125.SubCategoryDs>(
       () => _i125.SubCategoryDsImpl(gh<_i795.ApiManager>()),
     );
-    gh.factory<_i697.AuthDataSource>(
-      () => _i524.AuthDataSourceImpl(gh<_i795.ApiManager>()),
-    );
     gh.factory<_i0.ProductDs>(() => _i0.ProductDsImpl(gh<_i795.ApiManager>()));
     gh.factory<_i269.HomeDataSource>(
       () => _i1070.HomeDataSourceImpl(gh<_i795.ApiManager>()),
+    );
+    gh.lazySingleton<_i891.LocalStorageService>(
+      () => _i891.LocalStorageService(gh<_i460.SharedPreferences>()),
+    );
+    gh.factory<_i697.AuthDataSource>(
+      () => _i524.AuthDataSourceImpl(
+        gh<_i795.ApiManager>(),
+        gh<_i891.LocalStorageService>(),
+      ),
     );
     gh.factory<_i399.SubCategoryRepo>(
       () => _i544.SubCategoryRepoImpl(gh<_i125.SubCategoryDs>()),
@@ -106,3 +119,5 @@ extension GetItInjectableX on _i174.GetIt {
     return this;
   }
 }
+
+class _$RegisterModule extends _i891.RegisterModule {}

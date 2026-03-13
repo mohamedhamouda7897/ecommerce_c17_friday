@@ -1,14 +1,17 @@
 import 'package:ecommerce_c17_frid/core/Api/api_manager.dart';
 import 'package:ecommerce_c17_frid/core/Api/endpoints.dart';
+import 'package:ecommerce_c17_frid/core/cache_helper/cache_helper.dart';
 import 'package:ecommerce_c17_frid/features/auth/data/data_source/auth_data_source.dart';
 import 'package:ecommerce_c17_frid/features/auth/data/models/AuthResponse.dart';
 import 'package:ecommerce_c17_frid/features/auth/domain/entity/SignupRequest.dart';
 import 'package:injectable/injectable.dart';
+
 @Injectable(as: AuthDataSource)
 class AuthDataSourceImpl implements AuthDataSource {
   ApiManager apiManager;
+  LocalStorageService _localStorageService;
 
-  AuthDataSourceImpl(this.apiManager);
+  AuthDataSourceImpl(this.apiManager, this._localStorageService);
 
   @override
   Future<AuthResponse> login(String email, String password) async {
@@ -17,14 +20,17 @@ class AuthDataSourceImpl implements AuthDataSource {
         endpoint: Endpoints.signIn,
         data: {"email": email, "password": password},
       );
-      return AuthResponse.fromJson(response.data);
+      var result = AuthResponse.fromJson(response.data);
+
+      await _localStorageService.save("Token", result.token);
+      return result;
     } catch (e) {
       rethrow;
     }
   }
 
   @override
-  Future<AuthResponse> signUp(SignupRequest request)async {
+  Future<AuthResponse> signUp(SignupRequest request) async {
     try {
       var response = await apiManager.post(
         endpoint: Endpoints.signup,
