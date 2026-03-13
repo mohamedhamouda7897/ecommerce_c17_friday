@@ -113,6 +113,7 @@ class CustomProductWidget extends StatelessWidget {
                   children: [
                     Text(
                       truncateTitle(title),
+                      maxLines: 1,
                       style: getMediumStyle(
                         color: ColorManager.textColor,
                         fontSize: 14.sp,
@@ -121,6 +122,7 @@ class CustomProductWidget extends StatelessWidget {
                     SizedBox(height: height * 0.002),
                     Text(
                       truncateDescription(description),
+                      maxLines: 2,
                       style: getRegularStyle(
                         color: ColorManager.textColor,
                         fontSize: 14.sp,

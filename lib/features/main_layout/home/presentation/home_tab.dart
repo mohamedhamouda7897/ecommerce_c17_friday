@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:ecommerce_c17_frid/core/routes_manager/routes.dart';
 import 'package:ecommerce_c17_frid/di.dart';
 import 'package:ecommerce_c17_frid/features/auth/presentation/bloc/auth_state.dart';
 import 'package:ecommerce_c17_frid/features/main_layout/home/presentation/bloc/home_bloc.dart';
@@ -84,8 +85,17 @@ class _HomeTabState extends State<HomeTab> {
                         child: GridView.builder(
                           scrollDirection: Axis.horizontal,
                           itemBuilder: (context, index) {
-                            return CustomCategoryWidget(
-                              category: state.model!.data![index],
+                            return InkWell(
+                              onTap: () {
+
+                                Navigator.pushNamed(context, Routes.productsScreenRoute,
+
+                                arguments: state.model!.data![index].id
+                                );
+                              },
+                              child: CustomCategoryWidget(
+                                category: state.model!.data![index],
+                              ),
                             );
                           },
                           itemCount: state.model?.results ?? 0,
